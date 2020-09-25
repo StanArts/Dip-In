@@ -1,8 +1,11 @@
 package platforms;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.Random;
 
 import helpers.GameInfo;
 
@@ -13,11 +16,19 @@ public class PlatformsController {
     private Array<Platform> platforms = new Array<Platform>();
 
     private final float DISTANCE_BETWEEN_PLATFORMS = 250f;
+    private float minX, maxX;
+
+    private float lastPlatformPositionY;
+    private float cameraY;
+
+    private Random random = new Random();
 
     public PlatformsController(World world) {
         this.world = world;
+        minX = GameInfo.WIDTH / 2f - 110;
+        maxX = GameInfo.WIDTH / 2f + 110;
         createPlatforms();
-        positionPlatforms();
+        positionPlatforms(true);
     }
 
     void createPlatforms() {
@@ -33,7 +44,7 @@ public class PlatformsController {
 
             index++;
 
-            if (index == 4) {
+            if (index == 3) {
                 index = 1;
             }
         }
@@ -41,20 +52,41 @@ public class PlatformsController {
         platforms.shuffle();
     }
 
-    public void positionPlatforms() {
+    public void positionPlatforms(boolean firstTimeArranging) {
 
         while (platforms.get(0).getPlatformType() == "Platform_O") {
             platforms.shuffle();
         }
 
-        float positionY = GameInfo.HEIGHT / 2f;
-        float positionX = GameInfo.WIDTH / 2f;
+        float positionY = 0;
+
+        if (firstTimeArranging) {
+            positionY = GameInfo.HEIGHT / 2f;
+        } else {
+            positionY = lastPlatformPositionY;
+        }
+
+        int controlX = 0;
 
         for (Platform p : platforms) {
 
-            p.setSpritePosition(positionX, positionY);
+            if (p.getX() == 0 && p.getY() == 0) {
 
-            positionY -= DISTANCE_BETWEEN_PLATFORMS;
+                float positionX = 0;
+
+                if (controlX == 0) {
+                    positionX = randomBetweenNumbers(maxX, maxX);
+                    controlX = 1;
+                } else if (controlX == 1) {
+                    positionX = randomBetweenNumbers(minX, minX);
+                    controlX = 0;
+                }
+
+                p.setSpritePosition(positionX, positionY);
+
+                positionY -= DISTANCE_BETWEEN_PLATFORMS;
+                lastPlatformPositionY = positionY;
+            }
         }
     }
 
@@ -62,7 +94,30 @@ public class PlatformsController {
 
         for (Platform p : platforms) {
             batch.draw(p, p.getX() - p.getWidth() / 2f,
-                    p.getY() / p.getHeight() / 2f);
+                    p.getY() - p.getHeight() / 2f);
         }
+    }
+
+    public void createAndArrangeNewPlatforms() {
+        for (int i = 0; i < platforms.size; i++) {
+            if ((platforms.get(i).getY() - GameInfo.HEIGHT / 2f - 10) > cameraY) {
+                platforms.get(i).getTexture().dispose();
+                platforms.removeIndex(i);
+            }
+        }
+
+        if (platforms.size == 4) {
+            createPlatforms();
+            positionPlatforms(false);
+        }
+    }
+
+    public void setCameraY (float cameraY) {
+        this.cameraY = cameraY;
+    }
+
+    private float randomBetweenNumbers (float min, float max) {
+        random.nextInt(10);
+        return random.nextFloat() * (max - min) + min;
     }
 }

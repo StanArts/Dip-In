@@ -62,6 +62,8 @@ public class Gameplay implements Screen {
 
     void update(float dt) {
         moveCamera();
+        platformsController.setCameraY(mainCamera.position.y);
+        platformsController.createAndArrangeNewPlatforms();
     }
 
     void moveCamera() {
@@ -76,11 +78,12 @@ public class Gameplay implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.getBatch().begin();
-        //game.getBatch().draw(img, 0, 0);
-//        game.getBatch().draw(p, p.getX(), p.getY());
+
+        platformsController.drawPlatforms(game.getBatch());
+
         game.getBatch().end();
 
-        debugRenderer.render(world, box2DCamera.combined);
+//        debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
