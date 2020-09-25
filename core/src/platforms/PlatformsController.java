@@ -75,11 +75,13 @@ public class PlatformsController {
                 float positionX = 0;
 
                 if (controlX == 0) {
-                    positionX = randomBetweenNumbers(maxX, maxX);
+                    positionX = randomBetweenNumbers(maxX - 40, maxX);
                     controlX = 1;
+                    p.setDrawLeft(false);
                 } else if (controlX == 1) {
-                    positionX = randomBetweenNumbers(minX, minX);
+                    positionX = randomBetweenNumbers(minX + 40, minX);
                     controlX = 0;
+                    p.setDrawLeft(true);
                 }
 
                 p.setSpritePosition(positionX, positionY);
@@ -93,8 +95,13 @@ public class PlatformsController {
     public void drawPlatforms (SpriteBatch batch) {
 
         for (Platform p : platforms) {
-            batch.draw(p, p.getX() - p.getWidth() / 2f,
-                    p.getY() - p.getHeight() / 2f);
+            if (p.getDrawLeft()) {
+                batch.draw(p, p.getX() - p.getWidth() / 2f - 20,
+                        p.getY() - p.getHeight() / 2f);
+            } else {
+                batch.draw(p, p.getX() - p.getWidth() / 2f + 10,
+                        p.getY() - p.getHeight() / 2f);
+            }
         }
     }
 

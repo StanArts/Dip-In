@@ -17,6 +17,8 @@ public class Platform extends Sprite {
     private Body body;
     private String platformType;
 
+    private boolean drawLeft;
+
     public Platform (World world, String platformType) {
         super(new Texture("Platforms/" + platformType + ".png"));
         this.world = world;
@@ -27,14 +29,14 @@ public class Platform extends Sprite {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
-        bodyDef.position.set((getX() + 41.5f) / GameInfo.PPM,
-                (getY() + getHeight() / 2f) / GameInfo.PPM);
+        bodyDef.position.set((getX() - 45f) / GameInfo.PPM,
+                getY() / GameInfo.PPM);
 
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((getWidth() / 2 - 17) / GameInfo.PPM,
-                (getHeight() / 2) / GameInfo.PPM);
+        shape.setAsBox((getWidth() / 2.4f) / GameInfo.PPM,
+                (getHeight() / 2f) / GameInfo.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -51,5 +53,13 @@ public class Platform extends Sprite {
 
     public String getPlatformType() {
         return this.platformType;
+    }
+
+    public boolean getDrawLeft() {
+        return drawLeft;
+    }
+
+    public void setDrawLeft(boolean drawLeft) {
+        this.drawLeft = drawLeft;
     }
 }

@@ -21,14 +21,18 @@ public class Player extends Sprite {
         super(new Texture("Player/Player.png"));
         this.world = world;
         setPosition(x, y);
+        createBody();
     }
 
     void createBody() {
+
         BodyDef bodyDef = new BodyDef();
+
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(getX() / GameInfo.PPM, getY() / GameInfo.PPM);
 
         body = world.createBody(bodyDef);
+        body.setFixedRotation(true);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox((getWidth() / 2f) / GameInfo.PPM,
@@ -42,6 +46,10 @@ public class Player extends Sprite {
         Fixture fixture = body.createFixture(fixtureDef);
 
         shape.dispose();
+    }
+
+    public void movePlayer(float x) {
+        body.setLinearVelocity(x, body.getLinearVelocity().y);
     }
 
     public void drawPlayer(SpriteBatch batch) {
