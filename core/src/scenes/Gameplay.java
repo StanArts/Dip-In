@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -13,8 +12,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stangvel.dipin.GameMain;
 
 import helpers.GameInfo;
-import platforms.Platform;
 import platforms.PlatformsController;
+import player.Player;
 
 public class Gameplay implements Screen {
 
@@ -28,9 +27,8 @@ public class Gameplay implements Screen {
 
     private World world;
 
-//    Platform p;
-
     private PlatformsController platformsController;
+    private Player player;
 
     public Gameplay (GameMain game) {
         this.game = game;
@@ -51,8 +49,7 @@ public class Gameplay implements Screen {
 
         platformsController = new PlatformsController(world);
 
-//        p = new Platform(world, "Platform_1");
-//        p.setSpritePosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f);
+        player = platformsController.positionThePlayer(player);
     }
 
     @Override
@@ -61,7 +58,7 @@ public class Gameplay implements Screen {
     }
 
     void update(float dt) {
-        moveCamera();
+//        moveCamera();
         platformsController.setCameraY(mainCamera.position.y);
         platformsController.createAndArrangeNewPlatforms();
     }
@@ -81,12 +78,18 @@ public class Gameplay implements Screen {
 
         platformsController.drawPlatforms(game.getBatch());
 
+        player.drawPlayer(game.getBatch());
+
         game.getBatch().end();
 
-//        debugRenderer.render(world, box2DCamera.combined);
+        debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
+
+        player.updatePlayer();
+
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
     }
 
     @Override

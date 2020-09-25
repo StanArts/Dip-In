@@ -1,6 +1,5 @@
 package platforms;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -8,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Random;
 
 import helpers.GameInfo;
+import player.Player;
 
 public class PlatformsController {
 
@@ -119,5 +119,13 @@ public class PlatformsController {
     private float randomBetweenNumbers (float min, float max) {
         random.nextInt(10);
         return random.nextFloat() * (max - min) + min;
+    }
+
+    // It does position the player on the first
+    // platform appearing on the screen:
+    public Player positionThePlayer(Player player) {
+        player = new Player(world, platforms.get(0).getX(),
+                platforms.get(0).getY() + 100);
+        return player;
     }
 }
