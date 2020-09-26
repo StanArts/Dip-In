@@ -35,7 +35,7 @@ public class Player extends Sprite {
         body.setFixedRotation(true);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((getWidth() / 2f) / GameInfo.PPM,
+        shape.setAsBox((getWidth() / 2f - 10) / GameInfo.PPM,
                 (getHeight() / 2f) / GameInfo.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -53,7 +53,7 @@ public class Player extends Sprite {
     }
 
     public void drawPlayer(SpriteBatch batch) {
-        batch.draw(this, getX() + getWidth() / 2f,
+        batch.draw(this, getX() + getWidth() / 2f - 50,
                 getY() - getHeight() / 2f);
     }
 

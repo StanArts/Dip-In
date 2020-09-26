@@ -20,6 +20,7 @@ import com.stangvel.dipin.GameMain;
 
 import java.util.Random;
 
+import backgrounds.Background;
 import helpers.GameInfo;
 import platforms.PlatformsController;
 import player.Player;
@@ -27,17 +28,6 @@ import player.Player;
 public class Gameplay implements Screen {
 
     private GameMain game;
-
-    Color color;
-    Color endColor;
-    Color activeColor;
-    ColorAction actionStE = new ColorAction();
-    ColorAction actionEtS = new ColorAction();
-    SequenceAction sequenceAction;
-    ShapeRenderer testRenderer;
-    RepeatAction repeatAction = new RepeatAction();
-
-    private Actor actionManager = new Actor();
 
     private OrthographicCamera mainCamera;
     private Viewport gameViewport;
@@ -49,31 +39,10 @@ public class Gameplay implements Screen {
 
     private PlatformsController platformsController;
     private Player player;
-
-    Color[] colors = {Color.YELLOW, Color.GREEN, Color.BLUE};
-
-    Random generator = new Random();
+    private Background bg;
 
     public Gameplay (GameMain game) {
         this.game = game;
-
-        testRenderer = new ShapeRenderer();
-        color = new Color(Color.RED);
-        endColor = new Color(randomColor());
-        activeColor = new Color(Color.RED);
-
-        actionStE.setColor(activeColor);
-        actionStE.setDuration(5);
-        actionStE.setEndColor(endColor);
-
-        actionEtS.setColor(activeColor);
-        actionEtS.setDuration(5);
-        actionEtS.setEndColor(color);
-
-        sequenceAction = new SequenceAction(actionStE, actionEtS);
-        repeatAction.setAction(sequenceAction);
-        repeatAction.setCount(RepeatAction.FOREVER);
-        actionManager.addAction(repeatAction);
 
         mainCamera = new OrthographicCamera(GameInfo.WIDTH, GameInfo.HEIGHT);
         mainCamera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
@@ -92,6 +61,8 @@ public class Gameplay implements Screen {
         platformsController = new PlatformsController(world);
 
         player = platformsController.positionThePlayer(player);
+
+        bg = new Background(game);
     }
 
     @Override
@@ -118,38 +89,12 @@ public class Gameplay implements Screen {
         mainCamera.position.y -= 1f;
     }
 
-    Color randomColor() {
-
-        int randomIndex = generator.nextInt(colors.length);
-        return colors[randomIndex];
-    }
-
-//    void changeColor(float dt) {
-//
-//        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//
-//        colorAction.act(dt);
-//
-//    }
-
     @Override
     public void render(float delta) {
         update(delta);
 
-//        changeColor(delta);
+        bg.render(delta);
 
-        Gdx.gl.glClearColor(activeColor.r,activeColor.g,activeColor.b,activeColor.a);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        repeatAction.act(delta);
-
-
-//        testRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        testRenderer.setColor(activeColor);
-//        testRenderer.rect(100, 100, 40, 40);
-//        testRenderer.end();
-
-        actionManager.act(delta);
         game.getBatch().begin();
 
         platformsController.drawPlatforms(game.getBatch());
@@ -190,6 +135,7 @@ public class Gameplay implements Screen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
+        player.getTexture().dispose();
     }
 }
