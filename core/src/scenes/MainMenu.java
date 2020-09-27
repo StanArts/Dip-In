@@ -10,6 +10,7 @@ import com.stangvel.dipin.GameMain;
 
 import backgrounds.Background;
 import helpers.GameInfo;
+import huds.MainMenuButtons;
 
 public class MainMenu implements Screen {
 
@@ -19,6 +20,7 @@ public class MainMenu implements Screen {
     private Viewport gameViewport;
 
     private Background bg;
+    private MainMenuButtons btns;
 
     public MainMenu(GameMain game) {
         this.game = game;
@@ -30,6 +32,7 @@ public class MainMenu implements Screen {
         gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
 
         bg = new Background(game);
+        btns = new MainMenuButtons(game);
     }
 
     @Override
@@ -45,6 +48,9 @@ public class MainMenu implements Screen {
         game.getBatch().begin();
 
         game.getBatch().end();
+
+        game.getBatch().setProjectionMatrix(btns.getStage().getCamera().combined);
+        btns.getStage().draw();
     }
 
     @Override
@@ -69,6 +75,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-
+        bg.dispose();
+        btns.getStage().dispose();
     }
 }
