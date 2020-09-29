@@ -1,8 +1,7 @@
 package scenes;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -10,9 +9,9 @@ import com.stangvel.dipin.GameMain;
 
 import backgrounds.Background;
 import helpers.GameInfo;
-import huds.MainMenuButtons;
+import huds.OptionsButtons;
 
-public class MainMenu implements Screen {
+public class Options implements Screen {
 
     private GameMain game;
 
@@ -20,19 +19,22 @@ public class MainMenu implements Screen {
     private Viewport gameViewport;
 
     private Background bg;
-    private MainMenuButtons btns;
 
-    public MainMenu(GameMain game) {
+    private OptionsButtons btns;
+
+    public Options(GameMain game) {
         this.game = game;
 
         mainCamera = new OrthographicCamera();
         mainCamera.setToOrtho(false, GameInfo.WIDTH, GameInfo.HEIGHT);
         mainCamera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
 
-        gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
+        gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT,
+                mainCamera);
 
         bg = new Background(game);
-        btns = new MainMenuButtons(game);
+
+        btns = new OptionsButtons(game);
     }
 
     @Override
@@ -42,12 +44,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void render(float delta) {
-
         bg.render(delta);
-
-        game.getBatch().begin();
-
-        game.getBatch().end();
 
         game.getBatch().setProjectionMatrix(btns.getStage().getCamera().combined);
         btns.getStage().draw();

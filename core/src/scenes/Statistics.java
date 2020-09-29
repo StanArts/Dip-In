@@ -1,8 +1,6 @@
 package scenes;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -10,9 +8,9 @@ import com.stangvel.dipin.GameMain;
 
 import backgrounds.Background;
 import helpers.GameInfo;
-import huds.MainMenuButtons;
+import huds.StatisticsButtons;
 
-public class MainMenu implements Screen {
+public class Statistics implements Screen {
 
     private GameMain game;
 
@@ -20,9 +18,10 @@ public class MainMenu implements Screen {
     private Viewport gameViewport;
 
     private Background bg;
-    private MainMenuButtons btns;
 
-    public MainMenu(GameMain game) {
+    private StatisticsButtons btns;
+
+    public Statistics(GameMain game) {
         this.game = game;
 
         mainCamera = new OrthographicCamera();
@@ -32,7 +31,8 @@ public class MainMenu implements Screen {
         gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
 
         bg = new Background(game);
-        btns = new MainMenuButtons(game);
+
+        btns = new StatisticsButtons(game);
     }
 
     @Override
@@ -42,12 +42,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void render(float delta) {
-
         bg.render(delta);
-
-        game.getBatch().begin();
-
-        game.getBatch().end();
 
         game.getBatch().setProjectionMatrix(btns.getStage().getCamera().combined);
         btns.getStage().draw();
