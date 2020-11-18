@@ -58,7 +58,13 @@ public class Player extends Sprite {
     }
 
     public void updatePlayer() {
-        setPosition(body.getPosition().x * GameInfo.PPM,
-                body.getPosition().y * GameInfo.PPM);
+
+        if (body.getLinearVelocity().x > 0) {
+            setPosition(body.getPosition().x * GameInfo.PPM,
+                    body.getPosition().y * GameInfo.PPM);
+        } else if (body.getLinearVelocity().x < 0) {
+            setPosition((body.getPosition().x - 0.3f) * GameInfo.PPM,
+                    body.getPosition().y * GameInfo.PPM);
+        }
     }
 }

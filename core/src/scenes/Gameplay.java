@@ -22,6 +22,7 @@ import java.util.Random;
 
 import backgrounds.Background;
 import helpers.GameInfo;
+import huds.UIHud;
 import platforms.PlatformsController;
 import player.Player;
 
@@ -36,6 +37,8 @@ public class Gameplay implements Screen {
     private Box2DDebugRenderer debugRenderer;
 
     private World world;
+
+    private UIHud hud;
 
     private PlatformsController platformsController;
     private Player player;
@@ -55,6 +58,8 @@ public class Gameplay implements Screen {
         box2DCamera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
 
         debugRenderer = new Box2DDebugRenderer();
+
+        hud = new UIHud(game);
 
         world = new World(new Vector2(0, -9.8f), true);
 
@@ -86,7 +91,7 @@ public class Gameplay implements Screen {
     }
 
     void moveCamera() {
-        mainCamera.position.y -= 1f;
+        //mainCamera.position.y -= 1f;
     }
 
     @Override
@@ -108,6 +113,9 @@ public class Gameplay implements Screen {
         game.getBatch().setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
 
+        game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.getStage().draw();
+
         player.updatePlayer();
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
@@ -115,7 +123,7 @@ public class Gameplay implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        gameViewport.update(width, height);
     }
 
     @Override
