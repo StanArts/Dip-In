@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
@@ -22,11 +27,12 @@ import java.util.Random;
 
 import backgrounds.Background;
 import helpers.GameInfo;
+import helpers.GameManager;
 import huds.UIHud;
 import platforms.PlatformsController;
 import player.Player;
 
-public class Gameplay implements Screen {
+public class Gameplay implements Screen, ContactListener {
 
     private GameMain game;
 
@@ -35,6 +41,8 @@ public class Gameplay implements Screen {
 
     private OrthographicCamera box2DCamera;
     private Box2DDebugRenderer debugRenderer;
+
+    private boolean initialTouch;
 
     private World world;
 
@@ -62,6 +70,7 @@ public class Gameplay implements Screen {
         hud = new UIHud(game);
 
         world = new World(new Vector2(0, -9.8f), true);
+        world.setContactListener(this);
 
         platformsController = new PlatformsController(world);
 
@@ -83,15 +92,31 @@ public class Gameplay implements Screen {
         }
     }
 
+    void checkForFirstTouch() {
+        if (!initialTouch) {
+            if (Gdx.input.justTouched()) {
+                initialTouch = true;
+                GameManager.getInstance().isPaused = false;
+            }
+        }
+    }
+
     void update(float dt) {
-        handleInput(dt);
-//        moveCamera();
-        platformsController.setCameraY(mainCamera.position.y);
-        platformsController.createAndArrangeNewPlatforms();
+
+        checkForFirstTouch();
+
+        if (!GameManager.getInstance().isPaused) {
+            handleInput(dt);
+            moveCamera();
+
+            platformsController.setCameraY(mainCamera.position.y);
+            platformsController.createAndArrangeNewPlatforms();
+            platformsController.removeOffScreenCollectables();
+        }
     }
 
     void moveCamera() {
-        //mainCamera.position.y -= 1f;
+        mainCamera.position.y -= 1f;
     }
 
     @Override
@@ -103,6 +128,7 @@ public class Gameplay implements Screen {
         game.getBatch().begin();
 
         platformsController.drawPlatforms(game.getBatch());
+        platformsController.drawCollectables(game.getBatch());
 
         player.drawPlayer(game.getBatch());
 
@@ -110,11 +136,12 @@ public class Gameplay implements Screen {
 
         debugRenderer.render(world, box2DCamera.combined);
 
-        game.getBatch().setProjectionMatrix(mainCamera.combined);
-        mainCamera.update();
-
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
+        hud.getStage().act();
+
+        game.getBatch().setProjectionMatrix(mainCamera.combined);
+        mainCamera.update();
 
         player.updatePlayer();
 
@@ -146,5 +173,47 @@ public class Gameplay implements Screen {
         world.dispose();
         bg.dispose();
         player.getTexture().dispose();
+        debugRenderer.dispose();
+    }
+
+    @Override
+    public void beginContact(Contact contact) {
+
+        Fixture body1, body2;
+
+        if (contact.getFixtureA().getUserData() == "Player") {
+            body1 = contact.getFixtureA();
+            body2 = contact.getFixtureB();
+        } else {
+            body1 = contact.getFixtureB();
+            body2 = contact.getFixtureA();
+        }
+
+        if (body1.getUserData() == "Player" && body2.getUserData() == "Coin") {
+            hud.incrementCoins();
+            body2.setUserData("Remove");
+            platformsController.removeCollectables();
+        }
+
+        if (body1.getUserData() == "Player" && body2.getUserData() == "Life") {
+            hud.incrementLifes();
+            body2.setUserData("Remove");
+            platformsController.removeCollectables();
+        }
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
     }
 }

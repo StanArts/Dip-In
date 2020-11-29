@@ -1,11 +1,13 @@
 package platforms;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
+import collectables.Collectable;
 import helpers.GameInfo;
 import player.Player;
 
@@ -14,6 +16,7 @@ public class PlatformsController {
     private World world;
 
     private Array<Platform> platforms = new Array<Platform>();
+    private Array<Collectable> collectables = new Array<Collectable>();
 
     private final float DISTANCE_BETWEEN_PLATFORMS = 250f;
     private float minX, maxX;
@@ -88,6 +91,32 @@ public class PlatformsController {
 
                 positionY -= DISTANCE_BETWEEN_PLATFORMS;
                 lastPlatformPositionY = positionY;
+
+                if (!firstTimeArranging && p.getPlatformType() != "Platform_O") {
+
+                    int rand = random.nextInt(10);
+
+                    if (rand > 5) {
+
+                        int randomCollectable = random.nextInt(2);
+
+                        if (randomCollectable == 0) {
+
+                            Collectable life = new Collectable(world, "Life");
+
+                            life.setCollectablePosition(p.getX(),
+                                    p.getY() + 40);
+                            collectables.add(life);
+                        } else {
+
+                            Collectable coin = new Collectable(world, "Life");
+
+                            coin.setCollectablePosition(p.getX(),
+                                    p.getY() + 40);
+                            collectables.add(coin);
+                        }
+                    }
+                }
             }
         }
     }
@@ -105,6 +134,23 @@ public class PlatformsController {
         }
     }
 
+    public void drawCollectables(SpriteBatch batch) {
+
+        for (Collectable c: collectables) {
+            batch.draw(c, c.getX(), c.getY());
+        }
+    }
+
+    public void removeCollectables() {
+        for (int i = 0; i < collectables.size; i++) {
+            if (collectables.get(i).getFixture().getUserData() == "Remove") {
+                collectables.get(i).changeFilter();
+                collectables.get(i).getTexture().dispose();
+                collectables.removeIndex(i);
+            }
+        }
+    }
+
     public void createAndArrangeNewPlatforms() {
         for (int i = 0; i < platforms.size; i++) {
             if ((platforms.get(i).getY() - GameInfo.HEIGHT / 2f - 10) > cameraY) {
@@ -116,6 +162,15 @@ public class PlatformsController {
         if (platforms.size == 4) {
             createPlatforms();
             positionPlatforms(false);
+        }
+    }
+
+    public void removeOffScreenCollectables() {
+        for (int i = 0; i < collectables.size; i++) {
+            if ((collectables.get(i).getY() - GameInfo.HEIGHT / 2f -15) > cameraY) {
+                collectables.get(i).getTexture().dispose();
+                collectables.removeIndex(i);
+            }
         }
     }
 

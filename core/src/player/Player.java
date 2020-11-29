@@ -1,5 +1,6 @@
 package player;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,8 +43,11 @@ public class Player extends Sprite {
         fixtureDef.density = 4f;
         fixtureDef.friction = 2f;
         fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = GameInfo.PLAYER;
+        fixtureDef.filter.maskBits = GameInfo.DEFAULT | GameInfo.COLLECTABLE;
 
         Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData("Player");
 
         shape.dispose();
     }

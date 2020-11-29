@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stangvel.dipin.GameMain;
 
 import helpers.GameInfo;
+import helpers.GameManager;
 import scenes.Gameplay;
 import scenes.Options;
 import scenes.Statistics;
@@ -71,6 +72,7 @@ public class MainMenuButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 //                System.out.println("The play button was pressed.");
+                GameManager.getInstance().gameStartedFromMainMenu = true;
                 game.setScreen(new Gameplay(game));
             }
         });
@@ -112,6 +114,6 @@ public class MainMenuButtons {
     }
 
     public Stage getStage() {
-        return this.stage;
+        return stage;
     }
 }
