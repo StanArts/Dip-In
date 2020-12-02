@@ -9,6 +9,7 @@ import java.util.Random;
 
 import collectables.Collectable;
 import helpers.GameInfo;
+import helpers.GameManager;
 import player.Player;
 
 public class PlatformsController {
@@ -102,11 +103,14 @@ public class PlatformsController {
 
                         if (randomCollectable == 0) {
 
-                            Collectable life = new Collectable(world, "Life");
+                            if (GameManager.getInstance().lifeScore < 2) {
 
-                            life.setCollectablePosition(p.getX(),
-                                    p.getY() + 40);
-                            collectables.add(life);
+                                Collectable life = new Collectable(world, "Life");
+
+                                life.setCollectablePosition(p.getX(),
+                                        p.getY() + 40);
+                                collectables.add(life);
+                            }
                         } else {
 
                             Collectable coin = new Collectable(world, "Life");

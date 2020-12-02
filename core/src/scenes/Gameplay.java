@@ -1,5 +1,6 @@
 package scenes;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -16,8 +17,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -50,6 +53,8 @@ public class Gameplay implements Screen, ContactListener {
 
     private PlatformsController platformsController;
     private Player player;
+    private float lastPlayerY;
+
     private Background bg;
 
     public Gameplay (GameMain game) {
@@ -75,6 +80,7 @@ public class Gameplay implements Screen, ContactListener {
         platformsController = new PlatformsController(world);
 
         player = platformsController.positionThePlayer(player);
+        lastPlayerY = player.getY();
 
         bg = new Background(game);
     }
@@ -97,6 +103,7 @@ public class Gameplay implements Screen, ContactListener {
             if (Gdx.input.justTouched()) {
                 initialTouch = true;
                 GameManager.getInstance().isPaused = false;
+                lastPlayerY = player.getY();
             }
         }
     }
@@ -112,11 +119,83 @@ public class Gameplay implements Screen, ContactListener {
             platformsController.setCameraY(mainCamera.position.y);
             platformsController.createAndArrangeNewPlatforms();
             platformsController.removeOffScreenCollectables();
+
+            checkPlayersBounds();
+            countScore();
+        }
+    }
+
+    void checkPlayersBounds() {
+
+        if (((player.getY() - GameInfo.HEIGHT / 2f - player.getHeight() / 2f) > mainCamera.position.y) ||
+                ((player.getY() - GameInfo.HEIGHT / 2f + player.getHeight() / 2f) < mainCamera.position.y) ||
+                ((player.getX() - 25) > GameInfo.WIDTH || (player.getX() + 25) < 0)) {
+
+            if (!player.isDead()) {
+                playerDied();
+            }
         }
     }
 
     void moveCamera() {
         mainCamera.position.y -= 1f;
+    }
+
+    void countScore() {
+        if (lastPlayerY > player.getY()) {
+            hud.incrementScore(1);
+            lastPlayerY = player.getY();
+        }
+    }
+
+    void playerDied() {
+
+        GameManager.getInstance().isPaused = true;
+
+        hud.decrementLife();
+
+        player.setDead(true);
+
+        player.setPosition(1000, 1000);
+
+        if (GameManager.getInstance().lifeScore < 0) {
+
+            GameManager.getInstance().checkForNewHighScores();
+
+            hud.createGameOverPanel();
+
+            RunnableAction run = new RunnableAction();
+            run.setRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    game.setScreen(new MainMenu(game));
+                }
+            });
+
+            SequenceAction sa = new SequenceAction();
+            sa.addAction(Actions.delay(3f));
+            sa.addAction(Actions.fadeOut(1f));
+            sa.addAction(run);
+
+            hud.getStage().addAction(sa);
+
+        } else {
+
+            RunnableAction run = new RunnableAction();
+            run.setRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    game.setScreen(new Gameplay(game));
+                }
+            });
+
+            SequenceAction sa = new SequenceAction();
+            sa.addAction(Actions.delay(3f));
+            sa.addAction(Actions.fadeOut(1f));
+            sa.addAction(run);
+
+            hud.getStage().addAction(sa);
+        }
     }
 
     @Override
@@ -173,6 +252,7 @@ public class Gameplay implements Screen, ContactListener {
         world.dispose();
         bg.dispose();
         player.getTexture().dispose();
+        //hud.getStage().dispose();
         debugRenderer.dispose();
     }
 
@@ -199,6 +279,12 @@ public class Gameplay implements Screen, ContactListener {
             hud.incrementLifes();
             body2.setUserData("Remove");
             platformsController.removeCollectables();
+        }
+
+        if (body1.getUserData() == "Player" && body2.getUserData() == "Platform_O") {
+            if (!player.isDead()) {
+                playerDied();
+            }
         }
     }
 

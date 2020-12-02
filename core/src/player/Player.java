@@ -18,11 +18,14 @@ public class Player extends Sprite {
     private World world;
     private Body body;
 
+    private boolean isDead;
+
     public Player (World world, float x, float y) {
         super(new Texture("Player/Player.png"));
         this.world = world;
         setPosition(x, y);
         createBody();
+        isDead = false;
     }
 
     void createBody() {
@@ -70,5 +73,13 @@ public class Player extends Sprite {
             setPosition((body.getPosition().x - 0.3f) * GameInfo.PPM,
                     body.getPosition().y * GameInfo.PPM);
         }
+    }
+
+    public void setDead(boolean isDead) {
+        this.isDead = isDead;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 }

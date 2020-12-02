@@ -42,6 +42,7 @@ public class Platform extends Sprite {
         fixtureDef.shape = shape;
 
         Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(platformType);
 
         shape.dispose();
     }

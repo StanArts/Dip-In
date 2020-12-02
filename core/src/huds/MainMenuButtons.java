@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -17,6 +20,7 @@ import com.stangvel.dipin.GameMain;
 import helpers.GameInfo;
 import helpers.GameManager;
 import scenes.Gameplay;
+import scenes.MainMenu;
 import scenes.Options;
 import scenes.Statistics;
 
@@ -73,14 +77,43 @@ public class MainMenuButtons {
             public void changed(ChangeEvent event, Actor actor) {
 //                System.out.println("The play button was pressed.");
                 GameManager.getInstance().gameStartedFromMainMenu = true;
-                game.setScreen(new Gameplay(game));
+                //game.setScreen(new Gameplay(game));
+
+                RunnableAction run = new RunnableAction();
+                run.setRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        game.setScreen(new Gameplay(game));
+                    }
+                });
+
+                SequenceAction sa = new SequenceAction();
+                //sa.addAction(Actions.delay(3f));
+                sa.addAction(Actions.fadeOut(1f));
+                sa.addAction(run);
+
+                stage.addAction(sa);
             }
         });
 
         statisticsBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new Statistics(game));
+                //game.setScreen(new Statistics(game));
+                RunnableAction run = new RunnableAction();
+                run.setRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        game.setScreen(new Statistics(game));
+                    }
+                });
+
+                SequenceAction sa = new SequenceAction();
+                //sa.addAction(Actions.delay(3f));
+                sa.addAction(Actions.fadeOut(1f));
+                sa.addAction(run);
+
+                stage.addAction(sa);
             }
         });
 
