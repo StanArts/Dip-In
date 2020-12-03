@@ -26,8 +26,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stangvel.dipin.GameMain;
 
-import java.util.Random;
-
 import backgrounds.Background;
 import helpers.GameInfo;
 import helpers.GameManager;
@@ -46,6 +44,10 @@ public class Gameplay implements Screen, ContactListener {
     private Box2DDebugRenderer debugRenderer;
 
     private boolean initialTouch;
+
+    private float cameraSpeed = 10;
+    private float cameraMaxSpeed = 10;
+    private float acceleration = 10;
 
     private World world;
 
@@ -83,6 +85,8 @@ public class Gameplay implements Screen, ContactListener {
         lastPlayerY = player.getY();
 
         bg = new Background(game);
+
+        setCameraSpeed();
     }
 
     @Override
@@ -114,7 +118,7 @@ public class Gameplay implements Screen, ContactListener {
 
         if (!GameManager.getInstance().isPaused) {
             handleInput(dt);
-            moveCamera();
+            moveCamera(dt);
 
             platformsController.setCameraY(mainCamera.position.y);
             platformsController.createAndArrangeNewPlatforms();
@@ -137,8 +141,32 @@ public class Gameplay implements Screen, ContactListener {
         }
     }
 
-    void moveCamera() {
-        mainCamera.position.y -= 1f;
+    void moveCamera(float delta) {
+        mainCamera.position.y -= cameraSpeed * delta;
+
+        cameraSpeed += acceleration * delta;
+
+        if (cameraSpeed > cameraMaxSpeed) {
+            cameraSpeed = cameraMaxSpeed;
+        }
+    }
+
+    void setCameraSpeed() {
+
+        if (GameManager.getInstance().gameData.isEasyDifficulty()) {
+            cameraSpeed = 80;
+            cameraMaxSpeed = 100;
+        }
+
+        if (GameManager.getInstance().gameData.isEasyDifficulty()) {
+            cameraSpeed = 100;
+            cameraMaxSpeed = 120;
+        }
+
+        if (GameManager.getInstance().gameData.isEasyDifficulty()) {
+            cameraSpeed = 120;
+            cameraMaxSpeed = 140;
+        }
     }
 
     void countScore() {

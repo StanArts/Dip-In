@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stangvel.dipin.GameMain;
 
 import helpers.GameInfo;
+import helpers.GameManager;
 import scenes.MainMenu;
 
 public class StatisticsButtons {
@@ -77,9 +78,9 @@ public class StatisticsButtons {
 
         titleLabel = new Label("Statistics", new Label.LabelStyle(titleFont, Color.BLACK));
 
-        scoreLabelText = new Label("Highscore", new Label.LabelStyle(scoreFontText, Color.BLACK));
-        scoreLabel = new Label("100", new Label.LabelStyle(scoreFont, Color.BLACK));
-        coinCounterLabel = new Label(": " + "100", new Label.LabelStyle(coinFont, Color.BLACK));
+        scoreLabelText = new Label("High score", new Label.LabelStyle(scoreFontText, Color.BLACK));
+        scoreLabel = new Label(String.valueOf(GameManager.getInstance().gameData.getHighScore()), new Label.LabelStyle(scoreFont, Color.BLACK));
+        coinCounterLabel = new Label(":" + GameManager.getInstance().gameData.getCoinHighScore(), new Label.LabelStyle(coinFont, Color.BLACK));
 
         backBtn.setPosition(17, 17, Align.bottomLeft);
 

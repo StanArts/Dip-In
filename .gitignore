@@ -1,5 +1,8 @@
 ## Java
 
+*.json
+!spec/*.json
+
 *.class
 *.war
 *.ear
