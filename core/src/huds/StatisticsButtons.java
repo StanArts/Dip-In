@@ -69,7 +69,7 @@ public class StatisticsButtons {
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         parameterTitle.size = 100;
-        parameter.size = 60;
+        parameter.size = 70;
 
         BitmapFont titleFont = generator.generateFont(parameterTitle);
         BitmapFont scoreFont = generator.generateFont(parameter);
@@ -79,17 +79,17 @@ public class StatisticsButtons {
         titleLabel = new Label("Statistics", new Label.LabelStyle(titleFont, Color.BLACK));
 
         scoreLabelText = new Label("High score", new Label.LabelStyle(scoreFontText, Color.BLACK));
-        scoreLabel = new Label(String.valueOf(GameManager.getInstance().gameData.getHighScore()), new Label.LabelStyle(scoreFont, Color.BLACK));
-        coinCounterLabel = new Label(":" + GameManager.getInstance().gameData.getCoinHighScore(), new Label.LabelStyle(coinFont, Color.BLACK));
+        scoreLabel = new Label(String.valueOf(GameManager.getInstance().gameData.getCoinHighScore()), new Label.LabelStyle(scoreFont, Color.BLACK));
+        coinCounterLabel = new Label("x " + GameManager.getInstance().gameData.getHighScore(), new Label.LabelStyle(coinFont, Color.BLACK));
 
         backBtn.setPosition(17, 17, Align.bottomLeft);
 
-        coinCounterImage.setPosition(GameInfo.WIDTH / 2f - 140, GameInfo.HEIGHT / 2f - 240);
+        coinCounterImage.setPosition(GameInfo.WIDTH / 2f - 100, GameInfo.HEIGHT / 2f - 230);
 
         titleLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 240, Align.center);
         scoreLabelText.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 10, Align.center);
-        scoreLabel.setPosition(GameInfo.WIDTH / 2f - 50, GameInfo.HEIGHT / 2f - 120);
-        coinCounterLabel.setPosition(GameInfo.WIDTH / 2f - 50, GameInfo.HEIGHT / 2f - 240);
+        scoreLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 80, Align.center);
+        coinCounterLabel.setPosition(GameInfo.WIDTH / 2f - 40, GameInfo.HEIGHT / 2f - 240);
 
         backBtn.addListener(new ChangeListener() {
             @Override
@@ -100,6 +100,6 @@ public class StatisticsButtons {
     }
 
     public Stage getStage() {
-        return this.stage;
+        return stage;
     }
 }

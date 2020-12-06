@@ -46,7 +46,7 @@ public class Statistics implements Screen {
     public void render(float delta) {
         bg.render(delta);
 
-        //game.getBatch().setProjectionMatrix(btns.getStage().getCamera().combined);
+        game.getBatch().setProjectionMatrix(btns.getStage().getCamera().combined);
         btns.getStage().draw();
     }
 

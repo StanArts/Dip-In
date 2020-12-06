@@ -34,6 +34,8 @@ public class OptionsButtons {
     private ImageButton easy, medium, hard, backBtn;
     private Image sign;
 
+    private float signYPos = 20f;
+
     public OptionsButtons(GameMain game) {
         this.game = game;
 
@@ -47,6 +49,7 @@ public class OptionsButtons {
         createAndPositionButtons();
         addAllListeners();
 
+        stage.addActor(titleLabel);
         stage.addActor(easy);
         stage.addActor(medium);
         stage.addActor(hard);
@@ -79,9 +82,9 @@ public class OptionsButtons {
         titleLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 240, Align.center);
         backBtn.setPosition(17, 17, Align.bottomLeft);
 
-        easy.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 40, Align.center);
-        medium.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 30, Align.center);
-        hard.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 100, Align.center);
+        easy.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 50, Align.center);
+        medium.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 50, Align.center);
+        hard.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 150, Align.center);
 
         positionTheSign();
     }
@@ -98,7 +101,7 @@ public class OptionsButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 changeDifficulty(0);
-                sign.setY(easy.getY() + 13);
+                sign.setY(easy.getY() + signYPos);
             }
         });
 
@@ -106,7 +109,7 @@ public class OptionsButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 changeDifficulty(1);
-                sign.setY(medium.getY() + 13);
+                sign.setY(medium.getY() + signYPos);
             }
         });
 
@@ -114,7 +117,7 @@ public class OptionsButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 changeDifficulty(2);
-                sign.setY(hard.getY() + 13);
+                sign.setY(hard.getY() + signYPos);
             }
         });
     }
@@ -122,17 +125,17 @@ public class OptionsButtons {
     void positionTheSign() {
 
         if (GameManager.getInstance().gameData.isEasyDifficulty()) {
-            sign.setPosition(GameInfo.WIDTH / 2f + 48, easy.getY() + 13,
+            sign.setPosition(GameInfo.WIDTH / 2f + 115, easy.getY() + signYPos,
                     Align.bottomLeft);
         }
 
         if (GameManager.getInstance().gameData.isMediumDifficulty()) {
-            sign.setPosition(GameInfo.WIDTH / 2f + 48, medium.getY() + 13,
+            sign.setPosition(GameInfo.WIDTH / 2f + 115, medium.getY() + signYPos,
                     Align.bottomLeft);
         }
 
         if (GameManager.getInstance().gameData.isHardDifficulty()) {
-            sign.setPosition(GameInfo.WIDTH / 2f + 48, hard.getY() + 13,
+            sign.setPosition(GameInfo.WIDTH / 2f + 115, hard.getY() + signYPos,
                     Align.bottomLeft);
         }
     }
@@ -163,6 +166,6 @@ public class OptionsButtons {
     }
 
     public Stage getStage() {
-        return this.stage;
+        return stage;
     }
 }

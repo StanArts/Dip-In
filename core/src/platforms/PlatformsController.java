@@ -141,6 +141,7 @@ public class PlatformsController {
     public void drawCollectables(SpriteBatch batch) {
 
         for (Collectable c: collectables) {
+            c.updateCollectable();
             batch.draw(c, c.getX(), c.getY());
         }
     }

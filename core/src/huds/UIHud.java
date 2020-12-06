@@ -1,5 +1,6 @@
 package huds;
 
+import com.stangvel.dipin.GameMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.stangvel.dipin.GameMain;
 
 import helpers.GameInfo;
 import helpers.GameManager;
@@ -45,12 +45,13 @@ public class UIHud {
 
         Gdx.input.setInputProcessor(stage);
 
-        if (GameManager.getInstance().gameStartedFromMainMenu) {
+        if(GameManager.getInstance().gameStartedFromMainMenu) {
             GameManager.getInstance().gameStartedFromMainMenu = false;
 
             GameManager.getInstance().lifeScore = 2;
             GameManager.getInstance().coinScore = 0;
             GameManager.getInstance().score = 0;
+
         }
 
         createLabels();
@@ -62,29 +63,30 @@ public class UIHud {
         lifeAndCoinTable.setFillParent(true);
 
         lifeAndCoinTable.add(lifeImg).padLeft(10).padTop(10);
-        lifeAndCoinTable.add(lifeLabel).padLeft(10).padTop(10);
+        lifeAndCoinTable.add(lifeLabel).padLeft(5);
         lifeAndCoinTable.row();
 
         lifeAndCoinTable.add(coinImg).padLeft(10).padTop(10);
-        lifeAndCoinTable.add(coinLabel).padLeft(10).padTop(10);
+        lifeAndCoinTable.add(coinLabel).padLeft(5);
 
-        Table scoreLabel = new Table();
-        scoreLabel.top().right();
-        scoreLabel.setFillParent(true);
+        Table scoreTable = new Table();
+        scoreTable.top().right();
+        scoreTable.setFillParent(true);
 
-        scoreLabel.add(scoreImg).padLeft(20).padTop(15);
-        scoreLabel.row();
-        scoreLabel.add(scoreLabel).padRight(20).padTop(15);
+        scoreTable.add(scoreImg).padRight(10).padTop(10);
+        scoreTable.row();
+        scoreTable.add(scoreLabel).padRight(20).padTop(15);
 
         stage.addActor(lifeAndCoinTable);
-        stage.addActor(scoreLabel);
+        stage.addActor(scoreTable);
         stage.addActor(pauseBtn);
+
     }
 
     void createLabels() {
 
-        FreeTypeFontGenerator generator =
-                new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Berlin Sans FB Regular.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
+                Gdx.files.internal("Fonts/Berlin Sans FB Regular.ttf"));
 
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -93,14 +95,15 @@ public class UIHud {
 
         BitmapFont font = generator.generateFont(parameter);
 
-        coinLabel = new Label("x" + GameManager.getInstance().coinScore,
+        coinLabel = new Label("x " + GameManager.getInstance().coinScore,
                 new Label.LabelStyle(font, Color.WHITE));
 
-        lifeLabel = new Label("x" + GameManager.getInstance().lifeScore,
+        lifeLabel = new Label("x " + GameManager.getInstance().lifeScore,
                 new Label.LabelStyle(font, Color.WHITE));
 
         scoreLabel = new Label(String.valueOf(GameManager.getInstance().score),
                 new Label.LabelStyle(font, Color.WHITE));
+
     }
 
     void createImages() {
@@ -110,36 +113,37 @@ public class UIHud {
     }
 
     void createBtnAndAddListener() {
-
         pauseBtn = new ImageButton(new SpriteDrawable(new Sprite(
-                new Texture("UI/Buttons/Gameplay/Pause.png")
-        )));
+                new Texture("UI/Buttons/Gameplay/Pause.png"))));
 
-        pauseBtn.setPosition(470, 17, Align.bottomRight);
+        pauseBtn.setPosition(460, 17, Align.bottomRight);
 
         pauseBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // pauses the game
-                if (!GameManager.getInstance().isPaused) {
+                if(!GameManager.getInstance().isPaused) {
                     GameManager.getInstance().isPaused = true;
                     createPausePanel();
                 }
             }
         });
+
     }
 
     void createPausePanel() {
 
-        pausePanel = new Image(new Texture("UI/Buttons/Gameplay/Panel.png"));
+        pausePanel = new Image(new Texture("UI/Buttons/Gameplay/Pause_Panel.png"));
         resumeBtn = new ImageButton(new SpriteDrawable(new Sprite(
                 new Texture("UI/Buttons/Gameplay/Resume.png"))));
         quitBtn = new ImageButton(new SpriteDrawable(new Sprite(
                 new Texture("UI/Buttons/Main Menu/Quit.png"))));
 
-        pausePanel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, Align.center);
-        resumeBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 50, Align.center);
-        quitBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 80, Align.center);
+        pausePanel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f,
+                Align.center);
+        resumeBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2 + 50,
+                Align.center);
+        quitBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 80,
+                Align.center);
 
         resumeBtn.addListener(new ChangeListener() {
             @Override
@@ -159,6 +163,7 @@ public class UIHud {
         stage.addActor(pausePanel);
         stage.addActor(resumeBtn);
         stage.addActor(quitBtn);
+
     }
 
     void removePausePanel() {
@@ -169,56 +174,60 @@ public class UIHud {
 
     public void createGameOverPanel() {
 
-        Image gameOverPanel = new Image(new Texture("UI/Buttons/Gameplay/Panel.png"));
+        Image gameOverPanel = new Image(
+                new Texture("UI/Buttons/Gameplay/Game_Over_Panel.png"));
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Berlin Sans FB Regular.ttf"));
+        FreeTypeFontGenerator generator =
+                new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Berlin Sans FB Regular.ttf"));
 
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter =
+                new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 70;
 
         BitmapFont font = generator.generateFont(parameter);
 
-        Label endScore = new Label(String.valueOf(GameManager.getInstance().score),
-                new Label.LabelStyle(font, Color.WHITE));
+        Label endScore = new Label((": " + GameManager.getInstance().score),
+                new Label.LabelStyle(font, Color.BLACK));
 
-        Label endCoinScore = new Label(String.valueOf(GameManager.getInstance().score),
-                new Label.LabelStyle(font, Color.WHITE));
+        Label endCoinScore = new Label(("x " + GameManager.getInstance().coinScore),
+                new Label.LabelStyle(font, Color.BLACK));
 
         gameOverPanel.setPosition(GameInfo.WIDTH / 2f,
                 GameInfo.HEIGHT / 2f, Align.center);
 
-        endScore.setPosition(GameInfo.WIDTH / 2f - 30,
-                GameInfo.HEIGHT / 2f + 20, Align.center);
+        endScore.setPosition(GameInfo.WIDTH / 2f,
+                GameInfo.HEIGHT / 2f + 55);
 
         endCoinScore.setPosition(GameInfo.WIDTH / 2f - 30,
-                GameInfo.HEIGHT / 2f - 90, Align.center);
+                GameInfo.HEIGHT / 2f - 85, Align.center);
 
         stage.addActor(gameOverPanel);
         stage.addActor(endScore);
         stage.addActor(endCoinScore);
+
     }
 
-    public void incrementScore (int score) {
+    public void incrementScore(int score) {
         GameManager.getInstance().score += score;
         scoreLabel.setText(String.valueOf(GameManager.getInstance().score));
     }
 
     public void incrementCoins() {
         GameManager.getInstance().coinScore++;
-        coinLabel.setText("x" + GameManager.getInstance().coinScore);
+        coinLabel.setText("x " + GameManager.getInstance().coinScore);
         incrementScore(200);
     }
 
     public void incrementLifes() {
         GameManager.getInstance().lifeScore++;
-        lifeLabel.setText("x" + GameManager.getInstance().lifeScore);
+        lifeLabel.setText("x " + GameManager.getInstance().lifeScore);
         incrementScore(300);
     }
 
     public void decrementLife() {
         GameManager.getInstance().lifeScore--;
-        if (GameManager.getInstance().lifeScore >= 0) {
-            lifeLabel.setText("x" + GameManager.getInstance().lifeScore);
+        if(GameManager.getInstance().lifeScore >= 0) {
+            lifeLabel.setText("x " + GameManager.getInstance().lifeScore);
         }
     }
 
