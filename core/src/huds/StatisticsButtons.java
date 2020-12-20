@@ -79,8 +79,8 @@ public class StatisticsButtons {
         titleLabel = new Label("Statistics", new Label.LabelStyle(titleFont, Color.BLACK));
 
         scoreLabelText = new Label("High score", new Label.LabelStyle(scoreFontText, Color.BLACK));
-        scoreLabel = new Label(String.valueOf(GameManager.getInstance().gameData.getCoinHighScore()), new Label.LabelStyle(scoreFont, Color.BLACK));
-        coinCounterLabel = new Label("x " + GameManager.getInstance().gameData.getHighScore(), new Label.LabelStyle(coinFont, Color.BLACK));
+        scoreLabel = new Label(String.valueOf(GameManager.getInstance().gameData.getHighScore()), new Label.LabelStyle(scoreFont, Color.BLACK));
+        coinCounterLabel = new Label("x " + GameManager.getInstance().gameData.getCoinHighScore(), new Label.LabelStyle(coinFont, Color.BLACK));
 
         backBtn.setPosition(17, 17, Align.bottomLeft);
 

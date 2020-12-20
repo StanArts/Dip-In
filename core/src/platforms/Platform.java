@@ -29,13 +29,13 @@ public class Platform extends Sprite {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
-        bodyDef.position.set((getX() - 45f) / GameInfo.PPM,
+        bodyDef.position.set(getX() / GameInfo.PPM,
                 getY() / GameInfo.PPM);
 
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((getWidth() / 2.4f) / GameInfo.PPM,
+        shape.setAsBox((getWidth() / 2f) / GameInfo.PPM,
                 (getHeight() / 2f) / GameInfo.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();

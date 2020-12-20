@@ -29,8 +29,8 @@ public class PlatformsController {
 
     public PlatformsController(World world) {
         this.world = world;
-        minX = GameInfo.WIDTH / 2f - 110;
-        maxX = GameInfo.WIDTH / 2f + 110;
+        minX = GameInfo.WIDTH / 2f - 120;
+        maxX = GameInfo.WIDTH / 2f + 120;
         createPlatforms();
         positionPlatforms(true);
     }
@@ -113,10 +113,10 @@ public class PlatformsController {
                             }
                         } else {
 
-                            Collectable coin = new Collectable(world, "Life");
+                            Collectable coin = new Collectable(world, "Coin");
 
                             coin.setCollectablePosition(p.getX(),
-                                    p.getY() + 40);
+                                    p.getY() + 60);
                             collectables.add(coin);
                         }
                     }
@@ -129,10 +129,10 @@ public class PlatformsController {
 
         for (Platform p : platforms) {
             if (p.getDrawLeft()) {
-                batch.draw(p, p.getX() - p.getWidth() / 2f - 20,
+                batch.draw(p, p.getX() - p.getWidth() / 2f,
                         p.getY() - p.getHeight() / 2f);
             } else {
-                batch.draw(p, p.getX() - p.getWidth() / 2f + 10,
+                batch.draw(p, p.getX() - p.getWidth() / 2f,
                         p.getY() - p.getHeight() / 2f);
             }
         }
@@ -158,7 +158,7 @@ public class PlatformsController {
 
     public void createAndArrangeNewPlatforms() {
         for (int i = 0; i < platforms.size; i++) {
-            if ((platforms.get(i).getY() - GameInfo.HEIGHT / 2f - 10) > cameraY) {
+            if ((platforms.get(i).getY() - GameInfo.HEIGHT / 2 - 15f) > cameraY) {
                 platforms.get(i).getTexture().dispose();
                 platforms.removeIndex(i);
             }
@@ -172,7 +172,7 @@ public class PlatformsController {
 
     public void removeOffScreenCollectables() {
         for (int i = 0; i < collectables.size; i++) {
-            if ((collectables.get(i).getY() - GameInfo.HEIGHT / 2f -15) > cameraY) {
+            if ((collectables.get(i).getY() - GameInfo.HEIGHT / 2f - 15f) > cameraY) {
                 collectables.get(i).getTexture().dispose();
                 collectables.removeIndex(i);
             }
@@ -192,7 +192,7 @@ public class PlatformsController {
     // platform appearing on the screen:
     public Player positionThePlayer(Player player) {
         player = new Player(world, platforms.get(0).getX(),
-                platforms.get(0).getY() + 100);
+                platforms.get(0).getY() + 70);
         return player;
     }
 }

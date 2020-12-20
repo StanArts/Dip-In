@@ -1,15 +1,19 @@
 package huds;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -30,6 +34,8 @@ public class MainMenuButtons {
     private Stage stage;
     private Viewport gameViewport;
 
+    private Label titleLabel;
+
     private ImageButton playBtn;
     private ImageButton statisticsBtn;
     private ImageButton optionsBtn;
@@ -49,6 +55,7 @@ public class MainMenuButtons {
         createAndPositionButton();
         addAllListeners();
 
+        stage.addActor(titleLabel);
         stage.addActor(playBtn);
         stage.addActor(statisticsBtn);
         stage.addActor(optionsBtn);
@@ -57,11 +64,25 @@ public class MainMenuButtons {
     }
 
     void createAndPositionButton() {
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Berlin Sans FB Regular.ttf"));
+
+        FreeTypeFontGenerator.FreeTypeFontParameter parameterTitle =
+                new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameterTitle.size = 120;
+
+        BitmapFont titleFont = generator.generateFont(parameterTitle);
+
+        titleLabel = new Label("DipIn", new Label.LabelStyle(titleFont, Color.BLACK));
+
         playBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Start.png"))));
         statisticsBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Statistics.png"))));
         optionsBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Settings.png"))));
         quitBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Quit.png"))));
         musicBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Music_On.png"))));
+
+        titleLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 240, Align.center);
 
         playBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 50, Align.center);
         statisticsBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 50, Align.center);

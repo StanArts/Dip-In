@@ -51,7 +51,6 @@ public class UIHud {
             GameManager.getInstance().lifeScore = 2;
             GameManager.getInstance().coinScore = 0;
             GameManager.getInstance().score = 0;
-
         }
 
         createLabels();
@@ -75,7 +74,7 @@ public class UIHud {
 
         scoreTable.add(scoreImg).padRight(10).padTop(10);
         scoreTable.row();
-        scoreTable.add(scoreLabel).padRight(20).padTop(15);
+        scoreTable.add(scoreLabel);
 
         stage.addActor(lifeAndCoinTable);
         stage.addActor(scoreTable);
@@ -127,7 +126,6 @@ public class UIHud {
                 }
             }
         });
-
     }
 
     void createPausePanel() {
@@ -186,25 +184,24 @@ public class UIHud {
 
         BitmapFont font = generator.generateFont(parameter);
 
-        Label endScore = new Label((": " + GameManager.getInstance().score),
+        Label endScore = new Label(String.valueOf(GameManager.getInstance().score),
                 new Label.LabelStyle(font, Color.BLACK));
 
-        Label endCoinScore = new Label(("x " + GameManager.getInstance().coinScore),
+        Label endCoinScore = new Label(String.valueOf(GameManager.getInstance().coinScore),
                 new Label.LabelStyle(font, Color.BLACK));
 
         gameOverPanel.setPosition(GameInfo.WIDTH / 2f,
                 GameInfo.HEIGHT / 2f, Align.center);
 
-        endScore.setPosition(GameInfo.WIDTH / 2f,
-                GameInfo.HEIGHT / 2f + 55);
+        endScore.setPosition(GameInfo.WIDTH / 2f - 110f,
+                GameInfo.HEIGHT / 2f - 100f);
 
-        endCoinScore.setPosition(GameInfo.WIDTH / 2f - 30,
-                GameInfo.HEIGHT / 2f - 85, Align.center);
+        endCoinScore.setPosition(GameInfo.WIDTH / 2f + 105f,
+                GameInfo.HEIGHT / 2f - 60f, Align.center);
 
         stage.addActor(gameOverPanel);
         stage.addActor(endScore);
         stage.addActor(endCoinScore);
-
     }
 
     public void incrementScore(int score) {

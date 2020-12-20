@@ -34,7 +34,9 @@ public class OptionsButtons {
     private ImageButton easy, medium, hard, backBtn;
     private Image sign;
 
-    private float signYPos = 20f;
+    private float signXPos = 66f;
+    private float signYPos = 12f;
+
 
     public OptionsButtons(GameMain game) {
         this.game = game;
@@ -125,17 +127,17 @@ public class OptionsButtons {
     void positionTheSign() {
 
         if (GameManager.getInstance().gameData.isEasyDifficulty()) {
-            sign.setPosition(GameInfo.WIDTH / 2f + 115, easy.getY() + signYPos,
+            sign.setPosition(GameInfo.WIDTH / 2f + signXPos, easy.getY() + signYPos,
                     Align.bottomLeft);
         }
 
         if (GameManager.getInstance().gameData.isMediumDifficulty()) {
-            sign.setPosition(GameInfo.WIDTH / 2f + 115, medium.getY() + signYPos,
+            sign.setPosition(GameInfo.WIDTH / 2f + signXPos, medium.getY() + signYPos,
                     Align.bottomLeft);
         }
 
         if (GameManager.getInstance().gameData.isHardDifficulty()) {
-            sign.setPosition(GameInfo.WIDTH / 2f + 115, hard.getY() + signYPos,
+            sign.setPosition(GameInfo.WIDTH / 2f + signXPos, hard.getY() + signYPos,
                     Align.bottomLeft);
         }
     }

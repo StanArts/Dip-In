@@ -27,8 +27,8 @@ public class GameManager {
             gameData.setCoinHighScore(0);
 
             gameData.setEasyDifficulty(false);
-            gameData.setEasyDifficulty(true);
-            gameData.setEasyDifficulty(false);
+            gameData.setMediumDifficulty(true);
+            gameData.setHardDifficulty(false);
 
             gameData.setMusicOn(false);
 
@@ -40,7 +40,6 @@ public class GameManager {
 
     public void saveData() {
         if (gameData != null) {
-
             fileHandle.writeString(Base64Coder.encodeString(json.prettyPrint(gameData)), false);
         }
     }
@@ -54,9 +53,14 @@ public class GameManager {
         int oldHighScore = gameData.getHighScore();
         int oldCoinScore = gameData.getCoinHighScore();
 
-        if (oldCoinScore < score) {
+        if (oldHighScore < score) {
 
-            gameData.setCoinHighScore(score);
+            gameData.setHighScore(score);
+        }
+
+        if (oldCoinScore < coinScore) {
+
+            gameData.setCoinHighScore(coinScore);
         }
     }
 

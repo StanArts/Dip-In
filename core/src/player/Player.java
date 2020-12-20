@@ -39,7 +39,7 @@ public class Player extends Sprite {
         body.setFixedRotation(true);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((getWidth() / 2f - 10) / GameInfo.PPM,
+        shape.setAsBox((getWidth() / 2f) / GameInfo.PPM,
                 (getHeight() / 2f) / GameInfo.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -60,19 +60,22 @@ public class Player extends Sprite {
     }
 
     public void drawPlayer(SpriteBatch batch) {
-        batch.draw(this, getX() + getWidth() / 2f - 50,
+        batch.draw(this, getX() + getWidth() / 2f - 60f,
                 getY() - getHeight() / 2f);
     }
 
     public void updatePlayer() {
 
-        if (body.getLinearVelocity().x > 0) {
-            setPosition(body.getPosition().x * GameInfo.PPM,
-                    body.getPosition().y * GameInfo.PPM);
-        } else if (body.getLinearVelocity().x < 0) {
-            setPosition((body.getPosition().x - 0.3f) * GameInfo.PPM,
-                    body.getPosition().y * GameInfo.PPM);
-        }
+        setPosition(body.getPosition().x * GameInfo.PPM,
+                body.getPosition().y * GameInfo.PPM);
+
+//        if (body.getLinearVelocity().x > 0) {
+//            setPosition(body.getPosition().x * GameInfo.PPM,
+//                    body.getPosition().y * GameInfo.PPM);
+//        } else if (body.getLinearVelocity().x < 0) {
+//            setPosition(body.getPosition().x * GameInfo.PPM,
+//                    body.getPosition().y * GameInfo.PPM);
+//        }
     }
 
     public void setDead(boolean isDead) {

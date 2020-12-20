@@ -286,7 +286,6 @@ public class Gameplay implements Screen, ContactListener {
         player.updatePlayer();
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
-
     }
 
     @Override
