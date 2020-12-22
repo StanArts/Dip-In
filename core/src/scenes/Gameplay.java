@@ -5,10 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -42,9 +39,6 @@ public class Gameplay implements Screen, ContactListener {
 
     private World world;
 
-    private Sprite[] bgs;
-    private float lastYPosition;
-
     private float cameraSpeed = 10;
     private float maxSpeed = 10;
     private float acceleration = 10;
@@ -60,7 +54,7 @@ public class Gameplay implements Screen, ContactListener {
 
     private Background bg;
 
-    //private Sound coinSound, lifeSound;
+    private Sound coinSound, lifeSound;
 
     public Gameplay(GameMain game) {
         this.game = game;
@@ -90,9 +84,9 @@ public class Gameplay implements Screen, ContactListener {
         bg = new Background(game);
 
         setCameraSpeed();
-//        coinSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Coin Sound.wav"));
-//        lifeSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Life Sound.wav"));
 
+        coinSound = Gdx.audio.newSound(Gdx.files.internal("SFX/coin_sound.wav"));
+        lifeSound = Gdx.audio.newSound(Gdx.files.internal("SFX/life_sound.wav"));
     }
 
     void handleInput(float dt) {
@@ -147,11 +141,9 @@ public class Gameplay implements Screen, ContactListener {
         if(cameraSpeed > maxSpeed) {
             cameraSpeed = maxSpeed;
         }
-
     }
 
     void setCameraSpeed() {
-
         if(GameManager.getInstance().gameData.isEasyDifficulty()) {
             cameraSpeed = 80;
             maxSpeed = 100;
@@ -166,11 +158,9 @@ public class Gameplay implements Screen, ContactListener {
             cameraSpeed = 140;
             maxSpeed = 140;
         }
-
     }
 
     void checkPlayersBounds() {
-
         if(player.getY() - GameInfo.HEIGHT / 2f - player.getHeight() / 2f
                 > mainCamera.position.y) {
             if(!player.isDead()) {
@@ -190,7 +180,6 @@ public class Gameplay implements Screen, ContactListener {
                 playedDied();
             }
         }
-
     }
 
     void countScore() {
@@ -229,10 +218,7 @@ public class Gameplay implements Screen, ContactListener {
             sa.addAction(run);
 
             hud.getStage().addAction(sa);
-
         } else {
-
-            // reload the game so that the player can continue to play
             RunnableAction run = new RunnableAction();
             run.setRunnable(new Runnable() {
                 @Override
@@ -247,10 +233,7 @@ public class Gameplay implements Screen, ContactListener {
             sa.addAction(run);
 
             hud.getStage().addAction(sa);
-
         }
-
-
     }
 
     @Override
@@ -314,8 +297,8 @@ public class Gameplay implements Screen, ContactListener {
         bg.dispose();
         player.getTexture().dispose();
         debugRenderer.dispose();
-        //coinSound.dispose();
-        //lifeSound.dispose();
+        coinSound.dispose();
+        lifeSound.dispose();
     }
 
     @Override
@@ -332,14 +315,14 @@ public class Gameplay implements Screen, ContactListener {
 
         if(body1.getUserData() == "Player" && body2.getUserData() == "Coin") {
             hud.incrementCoins();
-//            coinSound.play();
+            coinSound.play();
             body2.setUserData("Remove");
             platformsController.removeCollectables();
         }
 
         if(body1.getUserData() == "Player" && body2.getUserData() == "Life") {
             hud.incrementLifes();
-//            lifeSound.play();
+            lifeSound.play();
             body2.setUserData("Remove");
             platformsController.removeCollectables();
         }
@@ -349,8 +332,6 @@ public class Gameplay implements Screen, ContactListener {
                 playedDied();
             }
         }
-
-
     }
 
     @Override

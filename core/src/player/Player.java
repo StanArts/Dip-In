@@ -68,14 +68,6 @@ public class Player extends Sprite {
 
         setPosition(body.getPosition().x * GameInfo.PPM,
                 body.getPosition().y * GameInfo.PPM);
-
-//        if (body.getLinearVelocity().x > 0) {
-//            setPosition(body.getPosition().x * GameInfo.PPM,
-//                    body.getPosition().y * GameInfo.PPM);
-//        } else if (body.getLinearVelocity().x < 0) {
-//            setPosition(body.getPosition().x * GameInfo.PPM,
-//                    body.getPosition().y * GameInfo.PPM);
-//        }
     }
 
     public void setDead(boolean isDead) {

@@ -1,6 +1,8 @@
 package huds;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,7 +25,7 @@ import helpers.GameInfo;
 import helpers.GameManager;
 import scenes.MainMenu;
 
-public class StatisticsButtons {
+public class StatisticsButtons implements Screen {
 
     private GameMain game;
     private Stage stage;
@@ -34,6 +36,8 @@ public class StatisticsButtons {
     private ImageButton backBtn;
 
     private Image coinCounterImage;
+
+    private Sound selectSound;
 
     public StatisticsButtons(GameMain game) {
         this.game = game;
@@ -91,9 +95,13 @@ public class StatisticsButtons {
         scoreLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 80, Align.center);
         coinCounterLabel.setPosition(GameInfo.WIDTH / 2f - 40, GameInfo.HEIGHT / 2f - 240);
 
+        selectSound = Gdx.audio.newSound(Gdx.files.internal("SFX/select_option_sound.wav"));
+
         backBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                selectSound.play();
+
                 game.setScreen(new MainMenu(game));
             }
         });
@@ -101,5 +109,40 @@ public class StatisticsButtons {
 
     public Stage getStage() {
         return stage;
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        selectSound.dispose();
     }
 }

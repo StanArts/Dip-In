@@ -1,5 +1,7 @@
 package huds;
 
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.stangvel.dipin.GameMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -24,7 +26,7 @@ import helpers.GameInfo;
 import helpers.GameManager;
 import scenes.MainMenu;
 
-public class UIHud {
+public class UIHud implements Screen {
 
     private GameMain game;
     private Stage stage;
@@ -34,6 +36,8 @@ public class UIHud {
     private Label coinLabel, lifeLabel, scoreLabel;
 
     private ImageButton pauseBtn, resumeBtn, quitBtn;
+
+    private Sound selectSound;
 
     public UIHud(GameMain game) {
         this.game = game;
@@ -80,10 +84,10 @@ public class UIHud {
         stage.addActor(scoreTable);
         stage.addActor(pauseBtn);
 
+        selectSound = Gdx.audio.newSound(Gdx.files.internal("SFX/select_option_sound.wav"));
     }
 
     void createLabels() {
-
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
                 Gdx.files.internal("Fonts/Berlin Sans FB Regular.ttf"));
 
@@ -96,13 +100,10 @@ public class UIHud {
 
         coinLabel = new Label("x " + GameManager.getInstance().coinScore,
                 new Label.LabelStyle(font, Color.WHITE));
-
         lifeLabel = new Label("x " + GameManager.getInstance().lifeScore,
                 new Label.LabelStyle(font, Color.WHITE));
-
         scoreLabel = new Label(String.valueOf(GameManager.getInstance().score),
                 new Label.LabelStyle(font, Color.WHITE));
-
     }
 
     void createImages() {
@@ -120,6 +121,7 @@ public class UIHud {
         pauseBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                selectSound.play();
                 if(!GameManager.getInstance().isPaused) {
                     GameManager.getInstance().isPaused = true;
                     createPausePanel();
@@ -129,7 +131,6 @@ public class UIHud {
     }
 
     void createPausePanel() {
-
         pausePanel = new Image(new Texture("UI/Buttons/Gameplay/Pause_Panel.png"));
         resumeBtn = new ImageButton(new SpriteDrawable(new Sprite(
                 new Texture("UI/Buttons/Gameplay/Resume.png"))));
@@ -146,6 +147,7 @@ public class UIHud {
         resumeBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                selectSound.play();
                 removePausePanel();
                 GameManager.getInstance().isPaused = false;
             }
@@ -154,6 +156,7 @@ public class UIHud {
         quitBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                selectSound.play();
                 game.setScreen(new MainMenu(game));
             }
         });
@@ -171,7 +174,6 @@ public class UIHud {
     }
 
     public void createGameOverPanel() {
-
         Image gameOverPanel = new Image(
                 new Texture("UI/Buttons/Gameplay/Game_Over_Panel.png"));
 
@@ -230,5 +232,40 @@ public class UIHud {
 
     public Stage getStage() {
         return this.stage;
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        selectSound.dispose();
     }
 }
