@@ -112,11 +112,11 @@ public class PlatformsController {
                             }
                         } else {
 
-                            Collectable coin = new Collectable(world, "Coin");
+                            Collectable coin1 = new Collectable(world, "Coin");
 
-                            coin.setCollectablePosition(p.getX(),
+                            coin1.setCollectablePosition(p.getX(),
                                     p.getY() + 60);
-                            collectables.add(coin);
+                            collectables.add(coin1);
                         }
                     }
                 }
@@ -125,7 +125,6 @@ public class PlatformsController {
     }
 
     public void drawPlatforms (SpriteBatch batch) {
-
         for (Platform p : platforms) {
             if (p.getDrawLeft()) {
                 batch.draw(p, p.getX() - p.getWidth() / 2f,
@@ -141,7 +140,7 @@ public class PlatformsController {
 
         for (Collectable c: collectables) {
             c.updateCollectable();
-            batch.draw(c, c.getX(), c.getY());
+            batch.draw(c, c.getX() - 20f, c.getY() - 20f);
         }
     }
 

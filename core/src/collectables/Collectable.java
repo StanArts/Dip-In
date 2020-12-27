@@ -57,7 +57,7 @@ public class Collectable extends Sprite {
 
     public void updateCollectable() {
         setPosition(body.getPosition().x * GameInfo.PPM,
-                (body.getPosition().y)* GameInfo.PPM);
+                (body.getPosition().y) * GameInfo.PPM);
     }
 
     public void changeFilter() {

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import helpers.GameManager;
-import scenes.MainMenu;
+import scenes.SplashScreen;
 
 public class GameMain extends Game {
 
@@ -14,7 +14,7 @@ public class GameMain extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		GameManager.getInstance().initializeGameData();
-		setScreen(new MainMenu(this));
+		setScreen(new SplashScreen(this));
 	}
 
 	@Override

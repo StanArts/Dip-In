@@ -39,8 +39,8 @@ public class Player extends Sprite {
         body.setFixedRotation(true);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((getWidth() / 2f) / GameInfo.PPM,
-                (getHeight() / 2f) / GameInfo.PPM);
+        shape.setAsBox((getWidth() / 2f - 1f) / GameInfo.PPM,
+                (getHeight() / 2f - 1f) / GameInfo.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 4f;
@@ -53,7 +53,7 @@ public class Player extends Sprite {
         fixture.setUserData("Player");
 
         shape.dispose();
-    }
+}
 
     public void movePlayer(float x) {
         body.setLinearVelocity(x, body.getLinearVelocity().y);

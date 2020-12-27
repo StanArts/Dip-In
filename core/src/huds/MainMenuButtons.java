@@ -36,6 +36,7 @@ public class MainMenuButtons implements Screen {
     private Viewport gameViewport;
 
     private Label titleLabel;
+    private Label rightsLabel;
 
     private ImageButton playBtn;
     private ImageButton statisticsBtn;
@@ -60,6 +61,7 @@ public class MainMenuButtons implements Screen {
         addAllListeners();
 
         stage.addActor(titleLabel);
+        stage.addActor(rightsLabel);
         stage.addActor(playBtn);
         stage.addActor(statisticsBtn);
         stage.addActor(optionsBtn);
@@ -79,9 +81,16 @@ public class MainMenuButtons implements Screen {
 
         parameterTitle.size = 120;
 
+        FreeTypeFontGenerator.FreeTypeFontParameter parameterRights =
+                new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameterRights.size = 20;
+
         BitmapFont titleFont = generator.generateFont(parameterTitle);
+        BitmapFont rightsFont = generator.generateFont(parameterRights);
 
         titleLabel = new Label("DipIn", new Label.LabelStyle(titleFont, Color.BLACK));
+        rightsLabel = new Label("© All rights reserved, StanArts, 2020", new Label.LabelStyle(rightsFont, Color.BLACK));
 
         playBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Start.png"))));
         statisticsBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Statistics.png"))));
@@ -91,6 +100,7 @@ public class MainMenuButtons implements Screen {
         musicBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("UI/Buttons/Main Menu/Music_On.png"))));
 
         titleLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 240, Align.center);
+        rightsLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 380, Align.center);
 
         playBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 50, Align.center);
         statisticsBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 20, Align.center);

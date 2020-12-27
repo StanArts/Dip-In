@@ -124,7 +124,7 @@ public class Gameplay implements Screen, ContactListener {
         if(!GameManager.getInstance().isPaused) {
 //            handleInput(dt);
             handleInputAndroid();
-            moveCamera(dt);
+//            moveCamera(dt);
             platformsController.setCameraY(mainCamera.position.y);
             platformsController.createAndArrangeNewPlatforms();
             platformsController.removeOffScreenCollectables();
@@ -257,7 +257,7 @@ public class Gameplay implements Screen, ContactListener {
 
         game.getBatch().end();
 
-//        debugRenderer.render(world, box2DCamera.combined);
+        debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
